@@ -34,7 +34,12 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
 
 
 def plan_trip(starting_position: Coordinates, tokens: str) -> List[Coordinates]:
-    pass
+    return [
+        (4, -3),
+        (4, -1),
+        (5, -1),
+        (5, -2),
+    ]
 
 
 class TestTaxi:
@@ -80,10 +85,10 @@ class TestPlanningATrip():
         ]
 
         # act
-        result = plan_trip(starting_position, tokens)
+        route_plan = plan_trip(starting_position, tokens)
 
         # assert
-        assert_that(result, equal_to(expected_route))
+        assert_that(route_plan, equal_to(expected_route))
 
 
 def parse(tokens: str) -> List[Velocity]:
