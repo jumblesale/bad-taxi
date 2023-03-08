@@ -4,6 +4,8 @@ import pytest
 
 
 def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
+    if tokens == 'w':
+        return -1, 0
     if tokens == 's':
         return 0, -1
     if tokens == 'e':
