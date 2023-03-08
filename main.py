@@ -4,57 +4,42 @@ import pytest
 import re
 
 Coordinates = Tuple[int, int]
-Movement = Callable[[Coordinates], Coordinates]
 Direction = Literal['n', 'e', 's', 'w']
 Velocity = NamedTuple('Velocity', [('speed', int),
                                    ('direction', Direction)])
+Movement = Callable[[Coordinates, Velocity], Coordinates]
 
 
 def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
-    def _move(x: int, y: int) -> Movement:
-        def _step(start: Coordinates, speed: int) -> Coordinates:
-            return start[0] + x * speed, start[1] + y * speed
-        return _step
-
-    def _direction_to_movement(direction: Direction) -> Movement:
-        return {
-            'n': _move(0, 1),
-            'e': _move(1, 0),
-            's': _move(0, -1),
-            'w': _move(-1, 0),
-        }[direction]
-
-    velocities: List[Velocity] = parse(tokens)
-
-    for velocity in velocities:
-        starting_position = _direction_to_movement(velocity.direction) \
-            (starting_position, velocity.speed)
-
-    return starting_position
+    return plan_trip(starting_position, tokens)[-1]
 
 
-def plan_trip(starting_position: Coordinates, tokens: str) -> List[Coordinates]:
-    def _move(x: int, y: int) -> Movement:
-        def _step(start: Coordinates, speed: int) -> Coordinates:
-            return start[0] + x * speed, start[1] + y * speed
+def plan_trip(starting_position: Coordinates, tokens: str):
+    return list(generate_coordinates(starting_position, parse(tokens)))
 
-        return _step
 
-    def _direction_to_movement(direction: Direction) -> Movement:
-        return {
-            'n': _move(0, 1),
-            'e': _move(1, 0),
-            's': _move(0, -1),
-            'w': _move(-1, 0),
-        }[direction]
-
-    velocities: List[Velocity] = parse(tokens)
-    trip_plan: List[Coordinates] = []
+def generate_coordinates(starting_position: Coordinates, velocities: List[Velocity]) -> Generator[Coordinates, None, None]:
     current_position = starting_position
     for velocity in velocities:
-        current_position = _direction_to_movement(velocity.direction)(current_position, velocity.speed)
-        trip_plan.append(current_position)
-    return trip_plan
+        current_position = apply_velocity(current_position, velocity)
+        yield current_position
+
+
+def apply_velocity(position: Coordinates, velocity: Velocity):
+    def _move(x: int, y: int) -> Movement:
+        def _step(_position: Coordinates, _velocity: Velocity) -> Coordinates:
+            return _position[0] + x * _velocity.speed, _position[1] + y * _velocity.speed
+        return _step
+
+    def _direction_to_movement(direction: Direction) -> Movement:
+        return {
+            'n': _move(0, 1),
+            'e': _move(1, 0),
+            's': _move(0, -1),
+            'w': _move(-1, 0),
+        }[direction]
+
+    return _direction_to_movement(velocity.direction)(position, velocity)
 
 
 class TestTaxi:
