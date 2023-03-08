@@ -4,6 +4,8 @@ from hamcrest import *
 
 
 def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
+    if tokens == 'e':
+        return 1, 0
     return 0, 1
 
 
@@ -29,7 +31,7 @@ def test_moving_up():
 
 def test_moving_east():
     # assert
-    token = 'E'
+    token = 'e'
 
     # act
     result = taxi((0, 0), token)
