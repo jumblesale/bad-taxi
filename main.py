@@ -9,32 +9,39 @@ def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
     return 0, 1
 
 
-'''
-    Test list:
-        - [X] N -> (0, 1)
-        - [ ] E -> (1, 0)
-        - [ ] S -> (0, -1)
-        - [ ] W -> (-1, 0)
-'''
+class TestTaxi:
+    """
+        Test list:
+            - [X] N -> (0, 1)
+            - [X] E -> (1, 0)
+            - [ ] S -> (0, -1)
+            - [ ] W -> (-1, 0)
+    """
+
+    def test_moving_north(self):
+        # assert
+        token = 'N'
+
+        # act
+        result = a_taxi_starting_from_0_0()(token)
+
+        # assert
+        assert_that_the_location_is(result, 0, 1)
+
+    def test_moving_east(self):
+        # assert
+        token = 'e'
+
+        # act
+        result = a_taxi_starting_from_0_0()(token)
+
+        # assert
+        assert_that_the_location_is(result, 1, 0)
 
 
-def test_moving_up():
-    # assert
-    token = 'N'
-
-    # act
-    result = taxi((0, 0), token)
-
-    # assert
-    assert_that(result, equal_to((0, 1)))
+def a_taxi_starting_from_0_0():
+    return lambda x: taxi((0, 0), x)
 
 
-def test_moving_east():
-    # assert
-    token = 'e'
-
-    # act
-    result = taxi((0, 0), token)
-
-    # assert
-    assert_that(result, equal_to((1, 0)))
+def assert_that_the_location_is(result: Tuple[int, int], x: int, y: int):
+    assert_that(result, equal_to((x, y)))
