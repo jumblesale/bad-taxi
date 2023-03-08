@@ -1,8 +1,10 @@
+from typing import *
 from hamcrest import *
 
 
-def taxi():
-    pass
+def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
+    return 0, 1
+
 
 def test_moving_up():
     # assert
