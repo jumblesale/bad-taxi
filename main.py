@@ -1,5 +1,6 @@
 from typing import *
 
+import pytest
 from hamcrest import *
 
 
@@ -12,48 +13,18 @@ def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
 
 
 class TestTaxi:
-    """
-        Test list:
-            - [X] N -> (0, 1)
-            - [X] E -> (1, 0)
-            - [X] S -> (0, -1)
-            - [ ] W -> (-1, 0)
-    """
-
-    def test_moving_north(self):
-        # assert
-        token = 'N'
-
+     @pytest.mark.parametrize("direction, expected", [
+        ('n', (0, 1)),
+        ('e', (1, 0)),
+        ('s', (0, -1)),
+    ])
+    def test_moving_north(self, direction: str, expected: Tuple[int, int]):
         # act
-        result = a_taxi_starting_from_0_0()(token)
+        final_position = a_taxi_starting_from_0_0()(direction)
 
         # assert
-        assert_that_the_location_is(result, 0, 1)
-
-    def test_moving_east(self):
-        # assert
-        token = 'e'
-
-        # act
-        result = a_taxi_starting_from_0_0()(token)
-
-        # assert
-        assert_that_the_location_is(result, 1, 0)
-
-    def test_moving_south(self):
-        # assert
-        token = 's'
-
-        # act
-        result = a_taxi_starting_from_0_0()(token)
-
-        # assert
-        assert_that_the_location_is(result, 0, -1)
+        assert_that(final_position, equal_to(expected))
 
 
 def a_taxi_starting_from_0_0():
     return lambda x: taxi((0, 0), x)
-
-
-def assert_that_the_location_is(result: Tuple[int, int], x: int, y: int):
-    assert_that(result, equal_to((x, y)))
