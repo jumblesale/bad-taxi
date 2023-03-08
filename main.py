@@ -25,3 +25,14 @@ def test_moving_up():
 
     # assert
     assert_that(result, equal_to((0, 1)))
+
+
+def test_moving_east():
+    # assert
+    token = 'E'
+
+    # act
+    result = taxi((0, 0), token)
+
+    # assert
+    assert_that(result, equal_to((1, 0)))
