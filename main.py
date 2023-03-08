@@ -16,7 +16,7 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
             return start[0] + x * speed, start[1] + y * speed
         return _step
 
-    def _velocity_to_movement(direction: Direction) -> Movement:
+    def _direction_to_movement(direction: Direction) -> Movement:
         return {
             'n': _move(0, 1),
             'e': _move(1, 0),
@@ -27,7 +27,7 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
     velocities: List[Velocity] = parse(tokens)
 
     for velocity in velocities:
-        starting_position = _velocity_to_movement(velocity.direction) \
+        starting_position = _direction_to_movement(velocity.direction) \
             (starting_position, velocity.speed)
 
     return starting_position
@@ -60,7 +60,7 @@ class TestTaxi:
         ('3n', (0, 3)),
         ('4w2senenwn', (-3, 1)),
     ])
-    def test_moving_multiples(self, movement: str, expected: Tuple[int, int]):
+    def test_moving_in_a_direction_multiple_times(self, movement: str, expected: Tuple[int, int]):
         # act
         final_position = TestTaxi.a_taxi_starting_from_0_0()(movement)
 
@@ -72,7 +72,7 @@ class TestTaxi:
         return lambda x: taxi((0, 0), x)
 
 
-class TestPlanningATrip():
+class TestPlanningATrip:
     def test_it_provides_a_plan_of_the_trip(self):
         # arrange
         starting_position = (1, -3)
