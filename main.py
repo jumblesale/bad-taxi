@@ -14,7 +14,6 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
     def _move(x: int, y: int) -> Movement:
         def _step(start: Coordinates, speed: int) -> Coordinates:
             return start[0] + x * speed, start[1] + y * speed
-
         return _step
 
     def _velocity_to_movement(direction: Direction) -> Movement:
@@ -25,13 +24,17 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
             'w': _move(-1, 0),
         }[direction]
 
-    velocities = parse(tokens)
+    velocities: List[Velocity] = parse(tokens)
 
     for velocity in velocities:
         starting_position = _velocity_to_movement(velocity.direction) \
             (starting_position, velocity.speed)
 
     return starting_position
+
+
+def plan_trip(starting_position: Coordinates, tokens: str) -> List[Coordinates]:
+    pass
 
 
 class TestTaxi:
@@ -62,6 +65,25 @@ class TestTaxi:
     @staticmethod
     def a_taxi_starting_from_0_0():
         return lambda x: taxi((0, 0), x)
+
+
+class TestPlanningATrip():
+    def test_it_provides_a_plan_of_the_trip(self):
+        # arrange
+        starting_position = (1, -3)
+        tokens = "3n2enw"
+        expected_route = [
+            (4, -3),
+            (4, -1),
+            (5, -1),
+            (5, -2),
+        ]
+
+        # act
+        result = plan_trip(starting_position, tokens)
+
+        # assert
+        assert_that(result, equal_to(expected_route))
 
 
 def parse(tokens: str) -> List[Velocity]:
