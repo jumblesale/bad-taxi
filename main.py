@@ -38,6 +38,16 @@ class TestTaxi:
         # assert
         assert_that_the_location_is(result, 1, 0)
 
+    def test_moving_south(self):
+        # assert
+        token = 's'
+
+        # act
+        result = a_taxi_starting_from_0_0()(token)
+
+        # assert
+        assert_that_the_location_is(result, 0, -1)
+
 
 def a_taxi_starting_from_0_0():
     return lambda x: taxi((0, 0), x)
