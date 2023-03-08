@@ -34,32 +34,6 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
     return starting_position
 
 
-def parse(tokens: str) -> List[Velocity]:
-    velocities = []
-    groups = re.findall(r'((\d+)([nswe]))+?|([nswe])', tokens)
-    for _, speed, multiple_direction, single_direction in groups:
-        if speed:
-            velocities.append(Velocity(int(speed), multiple_direction))
-        elif single_direction:
-            velocities.append(Velocity(1, single_direction))
-    return velocities
-
-
-class TestParse:
-    @pytest.mark.parametrize("tokens, expected", [
-        ('n',       [Velocity(1, 'n')]),
-        ('e',       [Velocity(1, 'e')]),
-        ('s',       [Velocity(1, 's')]),
-        ('w',       [Velocity(1, 'w')]),
-        ('ne',      [Velocity(1, 'n'), Velocity(1, 'e')]),
-        ('sw',      [Velocity(1, 's'), Velocity(1, 'w')]),
-        ('3ne',     [Velocity(3, 'n'), Velocity(1, 'e')]),
-        ('4s2ne2n', [Velocity(4, 's'), Velocity(2, 'n'), Velocity(1, 'e'), Velocity(2, 'n')]),
-    ])
-    def test_it_parses_directions_to_velocities(self, tokens: str, expected: List[Velocity]):
-        assert_that(parse(tokens), equal_to(expected))
-
-
 class TestTaxi:
     @pytest.mark.parametrize("direction, expected", [
         ('n', (0, 1)),
@@ -89,3 +63,28 @@ class TestTaxi:
     def a_taxi_starting_from_0_0():
         return lambda x: taxi((0, 0), x)
 
+
+def parse(tokens: str) -> List[Velocity]:
+    velocities = []
+    groups = re.findall(r'((\d+)([nswe]))+?|([nswe])', tokens)
+    for _, speed, multiple_direction, single_direction in groups:
+        if speed:
+            velocities.append(Velocity(int(speed), multiple_direction))
+        elif single_direction:
+            velocities.append(Velocity(1, single_direction))
+    return velocities
+
+
+class TestParse:
+    @pytest.mark.parametrize("tokens, expected", [
+        ('n',       [Velocity(1, 'n')]),
+        ('e',       [Velocity(1, 'e')]),
+        ('s',       [Velocity(1, 's')]),
+        ('w',       [Velocity(1, 'w')]),
+        ('ne',      [Velocity(1, 'n'), Velocity(1, 'e')]),
+        ('sw',      [Velocity(1, 's'), Velocity(1, 'w')]),
+        ('3ne',     [Velocity(3, 'n'), Velocity(1, 'e')]),
+        ('4s2ne2n', [Velocity(4, 's'), Velocity(2, 'n'), Velocity(1, 'e'), Velocity(2, 'n')]),
+    ])
+    def test_it_parses_directions_to_velocities(self, tokens: str, expected: List[Velocity]):
+        assert_that(parse(tokens), equal_to(expected))
