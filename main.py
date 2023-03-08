@@ -4,6 +4,8 @@ from hamcrest import *
 
 
 def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
+    if tokens == 's':
+        return 0, -1
     if tokens == 'e':
         return 1, 0
     return 0, 1
@@ -14,7 +16,7 @@ class TestTaxi:
         Test list:
             - [X] N -> (0, 1)
             - [X] E -> (1, 0)
-            - [ ] S -> (0, -1)
+            - [X] S -> (0, -1)
             - [ ] W -> (-1, 0)
     """
 
