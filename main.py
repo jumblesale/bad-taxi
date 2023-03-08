@@ -29,15 +29,16 @@ class TestTaxi:
         # assert
         assert_that(final_position, equal_to(expected))
 
-    def test_moving_multiples(self):
-        # arrange
-        movement = "3n"
-
+    @pytest.mark.parametrize("movement, expected", [
+        ('3n', (3, 0)),
+        ('4w2s', (-2, -4)),
+    ])
+    def test_moving_multiples(self, movement: str, expected: Tuple[int, int]):
         # act
         final_position = a_taxi_starting_from_0_0()(movement)
 
         # assert
-        assert_that(final_position, equal_to((3, 0)))
+        assert_that(final_position, equal_to(expected))
 
 
 def a_taxi_starting_from_0_0():
