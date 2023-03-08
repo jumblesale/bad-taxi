@@ -27,6 +27,16 @@ class TestTaxi:
         # assert
         assert_that(final_position, equal_to(expected))
 
+    def test_moving_multiples(self):
+        # arrange
+        movement = "3n"
+
+        # act
+        final_position = a_taxi_starting_from_0_0()(movement)
+
+        # assert
+        assert_that(final_position, equal_to((3, 0)))
+
 
 def a_taxi_starting_from_0_0():
     return lambda x: taxi((0, 0), x)
