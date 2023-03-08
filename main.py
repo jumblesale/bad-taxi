@@ -34,12 +34,27 @@ def taxi(starting_position: Coordinates, tokens: str) -> Coordinates:
 
 
 def plan_trip(starting_position: Coordinates, tokens: str) -> List[Coordinates]:
-    return [
-        (4, -3),
-        (4, -1),
-        (5, -1),
-        (5, -2),
-    ]
+    def _move(x: int, y: int) -> Movement:
+        def _step(start: Coordinates, speed: int) -> Coordinates:
+            return start[0] + x * speed, start[1] + y * speed
+
+        return _step
+
+    def _direction_to_movement(direction: Direction) -> Movement:
+        return {
+            'n': _move(0, 1),
+            'e': _move(1, 0),
+            's': _move(0, -1),
+            'w': _move(-1, 0),
+        }[direction]
+
+    velocities: List[Velocity] = parse(tokens)
+    trip_plan: List[Coordinates] = []
+    current_position = starting_position
+    for velocity in velocities:
+        current_position = _direction_to_movement(velocity.direction)(current_position, velocity.speed)
+        trip_plan.append(current_position)
+    return trip_plan
 
 
 class TestTaxi:
@@ -73,19 +88,25 @@ class TestTaxi:
 
 
 class TestPlanningATrip:
-    def test_it_provides_a_plan_of_the_trip(self):
-        # arrange
-        starting_position = (1, -3)
-        tokens = "3n2enw"
-        expected_route = [
-            (4, -3),
-            (4, -1),
-            (5, -1),
-            (5, -2),
-        ]
-
+    @pytest.mark.parametrize("starting_position, movement, expected_route", [
+        ((1, -3), '3n2enw', [
+            (1, 0),
+            (3, 0),
+            (3, 1),
+            (2, 1),
+        ]),
+        ((-8, 2), '100w2se3n', [
+            (-108, 2),
+            (-108, 0),
+            (-107, 0),
+            (-107, 3),
+        ]),
+    ])
+    def test_it_provides_a_plan_of_the_trip(
+            self, starting_position: Coordinates, movement: str, expected_route: List[Coordinates]
+    ):
         # act
-        route_plan = plan_trip(starting_position, tokens)
+        route_plan = plan_trip(starting_position, movement)
 
         # assert
         assert_that(route_plan, equal_to(expected_route))
