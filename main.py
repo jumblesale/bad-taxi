@@ -1,7 +1,6 @@
 from typing import *
-
-import pytest
 from hamcrest import *
+import pytest
 
 
 def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
@@ -13,12 +12,13 @@ def taxi(starting_position: Tuple[int, int], tokens: str) -> Tuple[int, int]:
 
 
 class TestTaxi:
-     @pytest.mark.parametrize("direction, expected", [
+    @pytest.mark.parametrize("direction, expected", [
         ('n', (0, 1)),
         ('e', (1, 0)),
         ('s', (0, -1)),
+        ('w', (-1, 0)),
     ])
-    def test_moving_north(self, direction: str, expected: Tuple[int, int]):
+    def test_cardinal_directions(self, direction: str, expected: Tuple[int, int]):
         # act
         final_position = a_taxi_starting_from_0_0()(direction)
 
