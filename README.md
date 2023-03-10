@@ -1,29 +1,32 @@
 # bad-taxi 🚕
 
-We've been asked to develop software for
-the world's first fully automated taxi.
+Welcome to the `bad-taxi` kata.
 
-Unfortunately, we haven't been given very
-much time to develop it, and we don't want
-to put taxi drivers out of work. So we are
-going to build a very *bad* taxi service.
+This kata was developed for the TWNL🌷
+Coding Dojo to practice the red, green,
+refactor cycle.
 
-The taxi assumes it is driving around a city
-made from perfect squares. It works on a
-co-ordinate system, with East/West travelling
-across the X axis and North/South travelling
-up/down the Y axis. The origin at (0, 0) is
-some arbitrary point in the city.
+If you aren't here from
+the dojo, perhaps you will also
+find it interesting!
 
-Passengers give their destination in the form
-of co-ordinates such as (11, -13) and the
-driver converts this into a series of
-movements along compass directions.
-So to get to the green point
-on the graph, the driver could enter the
-following instructions:
+## Structure
 
-```
-EEES
-```
+- The [bad_taxi](bad_taxi) directory contains
+  a reference solution for the exercise.
+- [bad_taxi.ipynb](bad_taxi.ipynb) is a Google
+  colab notebook where you can work through
+  the exercise interactively
 
+## Thanks
+
+None of this would have happened without
+the phenomenal support of my friends and
+colleagues at TWNL. Particular thanks to:
+
+- Will Ensoll
+- Alessandro Pagliero
+- Monica Calderero Rey
+- Alyona Galyeva
+
+You're wonderful! 💕
